@@ -473,7 +473,7 @@ private fun TimeTableScreen(
     val columnWeight = 1f / 9f
 
     Column(
-        modifier = Modifier.padding(start = 12.dp, end = 12.dp)
+        modifier = Modifier.padding(start = 3.dp, end = 3.dp)
     ) {
         // Here is the header
         Card(
@@ -507,7 +507,7 @@ private fun TimeTableScreen(
         }
 
 
-        Box {
+        Box{
             val state = rememberLazyListState()
 
             // The LazyColumn will be our table. Notice the use of the weights below

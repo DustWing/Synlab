@@ -5,8 +5,19 @@ import model.view.DropDownItem
 
 object DropDownItemFactory {
 
+    const val EMPTY ="empty"
 
-    fun create(): List<DropDownItem> {
+    fun create():DropDownItem{
+        return  DropDownItem(
+            id=EMPTY,
+            label = mutableStateOf(""),
+            value = mutableStateOf(""),
+            addInTotal = mutableStateOf(false),
+            addInDay = mutableStateOf(false)
+        )
+    }
+
+    fun createList(): List<DropDownItem> {
         return listOf(
             DropDownItem(
                 label = mutableStateOf("Night off"),

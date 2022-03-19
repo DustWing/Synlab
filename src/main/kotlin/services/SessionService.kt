@@ -115,6 +115,7 @@ class SessionService {
                         readOnly = mutableStateOf(dayHour.readOnly),
                         dropDownItem = mutableStateOf(
                             model.view.DropDownItem(
+                                id = dayHour.dropDownItem.id,
                                 label = mutableStateOf(dayHour.dropDownItem.label),
                                 value = mutableStateOf(dayHour.dropDownItem.value),
                                 addInTotal = mutableStateOf(dayHour.dropDownItem.addInTotal),
@@ -141,6 +142,7 @@ class SessionService {
     private fun jsonToDropDownItems(preSelectDdItems: List<DropDownItem>): List<model.view.DropDownItem> {
         return preSelectDdItems.stream().map {
             model.view.DropDownItem(
+                id = it.id,
                 label = mutableStateOf(it.label),
                 value = mutableStateOf(it.value),
                 addInTotal = mutableStateOf(it.addInTotal),

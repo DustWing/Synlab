@@ -17,7 +17,7 @@ fun main() = application {
             position = WindowPosition(
                 alignment = Alignment.Center
             ),
-            size = DpSize(1200.dp, 980.dp)
+            size = DpSize(1920.dp, 980.dp)
         ),
         icon = painterResource("icons/synlabIcon.jpg"),
         title = "SynLab Time Table",

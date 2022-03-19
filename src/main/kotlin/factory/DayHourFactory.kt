@@ -20,14 +20,7 @@ object DayHourFactory {
                     mutableStateOf(""),
                     mutableStateOf(true),
                     mutableStateOf(false),
-                    mutableStateOf(
-                        DropDownItem(
-                            label = mutableStateOf(""),
-                            value = mutableStateOf(""),
-                            addInTotal = mutableStateOf(false),
-                            addInDay = mutableStateOf(false)
-                        )
-                    ),
+                    mutableStateOf(DropDownItemFactory.create()),
 
                     )
             )

@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import factory.DateValFactory
 import factory.DropDownItemFactory
 import factory.UserFactory
+import kotlinx.coroutines.delay
 import model.view.DateVal
 import model.view.DayHour
 import model.view.DropDownItem
@@ -41,13 +42,16 @@ class TimeTableViewModel {
             userList.addAll(session.users)
             dateList.addAll(session.dateList)
             preSelectDdItems.addAll(session.preSelectDdItems)
+            reInitUserList()
         } catch (e: Exception) {
+            e.printStackTrace()
             dateList.addAll(DateValFactory.create())
-            preSelectDdItems.addAll(DropDownItemFactory.create())
+            preSelectDdItems.addAll(DropDownItemFactory.createList())
 
-        } finally {
-            appState.value = AppStateEnum.IDLE
         }
+
+        appState.value = AppStateEnum.IDLE
+
 
     }
 
@@ -57,19 +61,44 @@ class TimeTableViewModel {
             mSessionService.save(userList, dateList, preSelectDdItems)
         } catch (e: Exception) {
             e.printStackTrace()
-        } finally {
-            appState.value = AppStateEnum.IDLE
         }
+        delay(200)//need delay because UI is not updating for some reason
+        appState.value = AppStateEnum.IDLE
+
     }
 
     fun editPreSelectDdItems(list: List<DropDownItem>) {
         preSelectDdItems.clear()
         preSelectDdItems.addAll(list)
 
-        userList.forEach {
-            
+
+        reInitUserList()
+
+    }
+
+    private fun reInitUserList() {
+        //check dropdownItem if it still exists and update values
+        userList.forEach { user ->
+
+            user.dayHours.forEach { dayHour ->
+
+                if (dayHour.dropDownItem.value.id != DropDownItemFactory.EMPTY) {
+                    val found = preSelectDdItems.find { dayHour.dropDownItem.value.id == it.id }
+                    if (found == null) {
+                        dayHour.dropDownItem.value = DropDownItemFactory.create()
+                        dayHour.readOnly.value = false
+                        dayHour.hours.value = ""
+                    } else {
+                        dayHour.dropDownItem.value = found
+                    }
+                }
+
+            }
 
         }
+
+        //calculate all users
+        mTimeTableService.calculateUsersTotalHours(userList)
     }
 
     fun addBtn() {
