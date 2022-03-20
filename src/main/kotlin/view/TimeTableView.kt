@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
 import enums.Day
+import factory.DropDownItemFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import model.view.DateVal
@@ -276,6 +277,7 @@ private fun RowScope.TimeTableInputCell(
                         onClick = {
                             dayHour.hours.value = ""
                             dayHour.readOnly.value = false
+                            dayHour.dropDownItem.value = DropDownItemFactory.create()
                         }
                     ) {
                         Icon(imageVector = Icons.Filled.Clear, contentDescription = "remove preSelect")

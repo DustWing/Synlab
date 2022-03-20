@@ -177,6 +177,7 @@ fun SettingsDialog(
                 Button(
                     onClick = {
                         onSubmit(data)
+                        openDialog.value = false
                     }
                 ) {
                     Text("OK")

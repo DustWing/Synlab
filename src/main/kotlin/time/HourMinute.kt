@@ -65,12 +65,14 @@ data class HourMinute(
             )
         }
 
-        fun before(from: HourMinute, to: HourMinute): Boolean {
+        fun isNightShift(from: HourMinute, to: HourMinute): Boolean {
 
-            if (to.hours - from.hours < 0) {
-                return true
-            }
-            if (to.minutes - from.minutes < 0) {
+            if (to.hours <= from.hours) {
+
+                if (to.hours == from.hours && to.minutes > from.minutes) {
+                    return false
+                }
+
                 return true
             }
 
@@ -103,7 +105,7 @@ data class HourMinute(
             val fromMinutes = from.minutes
             val toMinutes = to.minutes
 
-            var hours = if (toHour < fromHour) toHour + 24 - fromHour else toHour - fromHour
+            var hours = if (toHour <= fromHour && toMinutes <=fromMinutes ) toHour + 24 - fromHour else toHour - fromHour
 
             var minutes = toMinutes - fromMinutes
 

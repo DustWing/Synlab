@@ -90,6 +90,7 @@ class TimeTableViewModel {
                         dayHour.hours.value = ""
                     } else {
                         dayHour.dropDownItem.value = found
+                        dayHour.hours.value = found.value.value
                     }
                 }
 
@@ -98,7 +99,11 @@ class TimeTableViewModel {
         }
 
         //calculate all users
-        mTimeTableService.calculateUsersTotalHours(userList)
+        userList.forEach { user ->
+
+            user.totalHours.value = mTimeTableService.calculateUserTotalHours(user)
+
+        }
     }
 
     fun addBtn() {
@@ -147,6 +152,7 @@ class TimeTableViewModel {
         } else {
             try {
                 mTimeTableService.validateHour(dayHour.hours.value)
+                dayHour.valid.value = true
             } catch (e: Exception) {
                 dayHour.valid.value = false
             }

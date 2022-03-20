@@ -38,13 +38,13 @@ data class HourMinutePair(
         }
 
         private fun create(from: HourMinute, to: HourMinute): HourMinutePair {
-            val nextDay = HourMinute.before(from, to)
+            val nightShift = HourMinute.isNightShift(from, to)
             val duration = HourMinute.between(from, to)
 
             return HourMinutePair(
                 from = from,
                 to = to,
-                nightShift = nextDay,
+                nightShift = nightShift,
                 duration = duration
             )
         }

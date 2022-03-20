@@ -20,7 +20,7 @@ class TimeTableService(
 
             user.dayHours.stream().filter {
 
-                if(it.readOnly.value){
+                if (it.readOnly.value) {
                     return@filter it.dropDownItem.value.addInTotal.value && it.hours.value.isNotBlank()
                 }
                 return@filter it.hours.value.isNotBlank()
@@ -33,16 +33,6 @@ class TimeTableService(
         ).toString()
     }
 
-    fun calculateUsersTotalHours(users: List<User>): Map<String, String> {
-        return buildMap {
-            users.forEach { user ->
-
-                this[user.id] = calculateUserTotalHours(user)
-
-            }
-        }
-    }
-
 
     fun validateDays(users: List<User>) {
 
@@ -51,8 +41,10 @@ class TimeTableService(
 
         map.forEach {
             try {
+                println("${it.key}")
                 validateDay(it.value)
             } catch (e: Exception) {
+                e.printStackTrace()
                 throw TimeTableException("${it.key}:  ${e.message}")
             }
 
@@ -65,18 +57,21 @@ class TimeTableService(
         return buildMap {
             users.forEach { user ->
 
-                user.dayHours.stream().filter{
-                    if(it.readOnly.value){
-                        return@filter it.dropDownItem.value.addInDay.value
-                    }
-                    return@filter it.hours.value.isNotBlank()
-                }.forEach {
+                user.dayHours.forEach {
 
                     if (this.containsKey(it.day)) {
-                        this[it.day]?.add(it.hours.value)
+                        if ((it.readOnly.value && it.dropDownItem.value.addInDay.value) || it.hours.value.isNotBlank()) {
+                            this[it.day]?.add(it.hours.value)
+                        }
+
                     } else {
+
                         this[it.day] = mutableListOf()
-                        this[it.day]?.add(it.hours.value)
+
+                        if ((it.readOnly.value && it.dropDownItem.value.addInDay.value) || it.hours.value.isNotBlank()) {
+                            this[it.day]?.add(it.hours.value)
+                        }
+
                     }
                 }
 
@@ -126,7 +121,7 @@ class TimeTableService(
 
                 //check for minutes 'from' to complete hours
                 if (i == from) {
-                    if (it.from.minutes > 0) {
+                    if (it.from.minutes > 0 && day[i] < 60) {
                         day[i] = it.from.minutes
                     } else {
                         day[i] = 60
@@ -136,7 +131,7 @@ class TimeTableService(
 
                 //check for minutes 'to' to complete hours
                 else if (i == to) {
-                    if (it.to.minutes > 0) {
+                    if (it.to.minutes > 0 && day[i] < 60) {
                         day[i] = it.to.minutes
                     }
                 } else {
@@ -151,6 +146,8 @@ class TimeTableService(
         if (!nightShift) {
             throw TimeTableException("Night shift not filled")
         }
+
+        println(day)
 
         val result = mutableListOf<String>()
         day.forEachIndexed { index, i ->
@@ -177,7 +174,10 @@ class TimeTableService(
             it.from.hours
         }.forEach {
 
-            if (toHour <= it.to.hours && it.from.hours <= toHour) {
+            if (it.nightShift && it.from.hours <= toHour) {
+                toHour = 0
+                toMinute = 0
+            } else if (toHour <= it.to.hours && it.from.hours <= toHour) {
                 toHour = it.to.hours
 
                 if (toMinute < it.to.minutes) toMinute = it.to.minutes
@@ -212,6 +212,8 @@ class TimeTableService(
             )
         )
 
+        println(list)
+        println(set)
         return set
 
     }

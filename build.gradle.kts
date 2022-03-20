@@ -22,6 +22,7 @@ dependencies {
     implementation("org.apache.poi:poi:5.2.1")
     implementation("org.apache.poi:poi-ooxml:5.2.1")
     implementation("com.google.code.gson:gson:2.9.0")
+    implementation("org.junit.jupiter:junit-jupiter:5.8.2")
 
 
 }
