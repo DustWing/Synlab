@@ -173,7 +173,11 @@ fun SettingsDialog(
                 )
             }
 
-            Row (Modifier.weight(0.1f)){
+            Row (
+                modifier = Modifier.weight(0.1f).fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ){
                 Button(
                     onClick = {
                         onSubmit(data)

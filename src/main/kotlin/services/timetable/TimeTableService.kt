@@ -12,7 +12,12 @@ class TimeTableService(
 
 
     fun validateHour(string: String) {
-        HourMinutePair.parse(string)
+
+        val list = string.split(";")
+        list.forEach {
+            HourMinutePair.parse(it)
+
+        }
     }
 
     fun calculateUserTotalHours(user: User): String {
@@ -27,8 +32,14 @@ class TimeTableService(
 
 
             }.map {
-                HourMinutePair.parse(it.hours.value)
-            }.toList()
+
+                val list = it.hours.value.split(";")
+                list.stream().map { e ->
+                    HourMinutePair.parse(e)
+                }.toList()
+
+
+            }.flatMap(List<HourMinutePair>::stream).toList()
 
         ).toString()
     }
@@ -87,8 +98,13 @@ class TimeTableService(
                 it.isNotBlank()
             }
             .map {
-                HourMinutePair.parse(it)
-            }.toList()
+                val list2 = it.split(";")
+                list2.stream().map { e ->
+                    HourMinutePair.parse(e)
+                }.toList()
+
+
+            }.flatMap(List<HourMinutePair>::stream).toList()
 
         checkDay(
             hourMinutePairs

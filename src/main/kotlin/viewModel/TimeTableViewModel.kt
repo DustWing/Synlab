@@ -123,8 +123,14 @@ class TimeTableViewModel {
     fun clear() {
 
         userList.forEach { user ->
+
+            user.totalHours.value = ""
+
             user.dayHours.forEach {
                 it.hours.value = ""
+                it.dropDownItem.value = DropDownItemFactory.create()
+                it.readOnly.value = false
+                it.valid.value = true
             }
         }
 
