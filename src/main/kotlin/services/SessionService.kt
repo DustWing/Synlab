@@ -109,7 +109,7 @@ class SessionService {
                 lastName = mutableStateOf(it.lastName),
                 dayHours = it.dayHours.stream().map { dayHour ->
                     model.view.DayHour(
-                        day = dayHour.day,
+                        day = dayHour.day!!,
                         hours = mutableStateOf(dayHour.hours),
                         valid = mutableStateOf(dayHour.valid),
                         readOnly = mutableStateOf(dayHour.readOnly),

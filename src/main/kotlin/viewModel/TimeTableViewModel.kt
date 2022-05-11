@@ -13,6 +13,7 @@ import model.view.User
 import model.view.enums.AppStateEnum
 import services.ExcelService
 import services.SessionService
+import services.exceptionlog.MyLog
 import services.timetable.TimeTableService
 
 class TimeTableViewModel {
@@ -44,6 +45,7 @@ class TimeTableViewModel {
             preSelectDdItems.addAll(session.preSelectDdItems)
             reInitUserList()
         } catch (e: Exception) {
+            MyLog.error("",e)
             e.printStackTrace()
             dateList.addAll(DateValFactory.create())
             preSelectDdItems.addAll(DropDownItemFactory.createList())
